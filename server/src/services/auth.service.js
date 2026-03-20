@@ -1,13 +1,17 @@
 import UserRepository from "../repositories/user.repository.js";
 const userRepository = new UserRepository();
 import Jwt from "../utils/jwt.js";
+import bcrypt from "bcrypt";
 const jwt = new Jwt();
 
 
 class AuthService {
     async register(data) {
         try {
-            console.log(data);
+            // console.log(data);
+            const { password } = data;
+            const hashPassword = await bcrypt.hash(password, 10);
+            data.password = hashPassword
             const user = await userRepository.create(data);
             return user;
         } catch (error) {
@@ -20,12 +24,17 @@ class AuthService {
             if (!user) {
                 throw new Error("User not found");
             }
-            if (user.password !== data.password) {
+
+            const isMatchPassword = await bcrypt.compare(data.password, user.password);
+
+            if (!isMatchPassword) {
                 throw new Error("Invalid password");
             }
-            const token = await jwt.jwtEncrypt({ id: user.id });
-            const { password, ...userWithoutPassword } = user._doc;
-            return { userWithoutPassword, token }
+
+            const token = await jwt.jwtEncrypt({ id: user.id, email: user.email });
+            // const { password, ...userWithoutPassword } = user._doc;
+            // return { user: userWithoutPassword, token }
+            return { token }
         } catch (error) {
             throw error
         }
