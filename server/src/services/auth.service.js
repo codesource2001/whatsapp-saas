@@ -9,9 +9,9 @@ class AuthService {
     async register(data) {
         try {
             // console.log(data);
-            const { password } = data;
-            const hashPassword = await bcrypt.hash(password, 10);
-            data.password = hashPassword
+            // const { password } = data;
+            // const hashPassword = await bcrypt.hash(password, 10);
+            // data.password = hashPassword
             const user = await userRepository.create(data);
             return user;
         } catch (error) {
@@ -25,7 +25,8 @@ class AuthService {
                 throw new Error("User not found");
             }
 
-            const isMatchPassword = await bcrypt.compare(data.password, user.password);
+            // const isMatchPassword = await bcrypt.compare(data.password, user.password);
+            const isMatchPassword = await user.comparePassword(data.password);
 
             if (!isMatchPassword) {
                 throw new Error("Invalid password");
