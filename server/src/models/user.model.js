@@ -1,23 +1,27 @@
 import mongoose from "mongoose";
+import STATUS_TYPE from "../utils/enums.js";
 
 const userSchema = new mongoose.Schema({
-    firstName: { type: String, required: true, min: 3, max: 30 },
-    lastName: { type: String, required: true, min: 3, max: 30 },
-    username: { type: String, required: true, unique: true, min: 6, max: 30 },
-    phoneNumber: { type: String, required: true, min: 10, max: 10 },
+    firstName: { type: String, required: true, lowercase: true, minlength: 3, maxlength: 30 },
+    lastName: { type: String, required: true, lowercase: true, minlength: 3, maxlength: 30 },
+    username: { type: String, required: true, lowercase: true, unique: true, minlength: 6, maxlength: 30 },
+    // phoneNumber: { type: String, required: true, match: /^[0-9]{10}$/ },
+    phoneNumber: { type: Number, required: true, min: 10, max: 10 },
+
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true, 
+        lowercase: true
     },
     password: {
         type: String,
         required: true,
-        min: 8,
-        max: 100
+        minlength: 8,
+        maxlength: 100
     },
-    avatar: String,
-    status: { type: String, required: true, default: 'active' },
+    avatar: { type: String, default: null }, // https://ui-avatars.com/
+    status: { type: String, required: true, enum: [STATUS_TYPE.ACTIVE, STATUS_TYPE.INACTIVE, STATUS_TYPE.BLOCK], default: 'active' }, // active  / inactive / block
     lastLogin: Date,
     role: { type: String, required: true, default: "user" },
     permissions: { type: [String] },

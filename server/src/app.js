@@ -1,8 +1,10 @@
 import express from "express";
 const app = express();
 import apiRouter from "../src/routes/index.js";
+import morgan from "morgan";
 
 
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
