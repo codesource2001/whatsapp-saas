@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     // lastLogin: Date,
     // role: { type: String, required: true, default: "user" },
     // permissions: { type: [String] },
-    // isEmailVerified: { type: Boolean, default: false },
+    isEmailVerified: { type: Boolean, default: false },
 }, {
     timestamps: true
 });
