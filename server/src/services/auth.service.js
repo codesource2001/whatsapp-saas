@@ -4,16 +4,26 @@ import Jwt from "../utils/jwt.js";
 import bcrypt from "bcrypt";
 const jwt = new Jwt();
 
+import ejs from "ejs";
+import path from "path";
+
+import createActivationToken from "../utils/activation.js";
+import sendMail from "../services/email.service.js";
+
 
 class AuthService {
     async register(data) {
         try {
-            // console.log(data);
-            // const { password } = data;
-            // const hashPassword = await bcrypt.hash(password, 10);
-            // data.password = hashPassword
             const user = await userRepository.create(data);
-            return user;
+            const { token, activationCode } = await createActivationToken(user);
+
+            const data = { user: { name: `${user.firstName} ${user.lastName} ` }, acivationCode: activationCode }
+
+            const html = await ejs.renderFile(path.join(__dirname, "../mails/activation-mail.ejs"), data);
+
+            await sendMail({ email: user.email, subject: "Account Activation", template: html, data });
+
+            return { user, token };
         } catch (error) {
             throw error
         }
@@ -26,7 +36,7 @@ class AuthService {
             }
 
             // isEmailVerified: { type: Boolean, default: false },
-            if(!user.isEmailVerified){
+            if (!user.isEmailVerified) {
                 throw new Error("User email not verified found");
             }
 

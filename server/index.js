@@ -1,7 +1,7 @@
 import app from "./src/app.js"
 import config from "./src/config/index.js"
 import connectDB from "./src/database/mongo.db.js"
-import sendMail from "./src/services/email.service.js"
+// import sendMail from "./src/services/email.service.js"
 
 
 

@@ -3,8 +3,8 @@ import STATUS_TYPE from "../utils/enums.js";
 import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
-    // firstName: { type: String, required: true, lowercase: true, minlength: 3, maxlength: 30 },
-    // lastName: { type: String, required: true, lowercase: true, minlength: 3, maxlength: 30 },
+    firstName: { type: String, required: true, lowercase: true, minlength: 3, maxlength: 30 },
+    lastName: { type: String, required: true, lowercase: true, minlength: 3, maxlength: 30 },
     // username: { type: String, required: true, lowercase: true, unique: true, minlength: 6, maxlength: 30 },
     // phoneNumber: { type: String, required: true, match: /^[0-9]{10}$/ },
     // phoneNumber: { type: Number, required: true, min: 10, max: 10 },
@@ -41,7 +41,7 @@ userSchema.pre('save', async function () {
 });
 
 
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
     return await bcrypt.compare(candidatePassword, this.password);
 };
 

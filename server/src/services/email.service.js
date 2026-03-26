@@ -1,5 +1,14 @@
 import nodemailer from 'nodemailer';
 
+/**
+ * Sends an email using the nodemailer library.
+ * 
+ * @param {string} email - The recipient's email address.
+ * @param {string} subject - The subject of the email.
+ * @param {string} template - The HTML template for the email.
+ * @param {object} data - The data to be used when rendering the HTML template.
+ * @returns {Promise<void>} - A promise that resolves when the email is sent successfully.
+ */
 const sendEmail = async (email, subject, template, data) => {
     // Implementation for sending email
     const transporter = nodemailer.createTransport({
@@ -24,7 +33,7 @@ const sendEmail = async (email, subject, template, data) => {
         from: process.env.EMAIL_USER,
         to: email,
         subject: subject,
-        text: data.content
+        html: template,
     };
 
     try {
