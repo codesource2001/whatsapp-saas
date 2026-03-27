@@ -9,7 +9,7 @@ import nodemailer from 'nodemailer';
  * @param {object} data - The data to be used when rendering the HTML template.
  * @returns {Promise<void>} - A promise that resolves when the email is sent successfully.
  */
-const sendEmail = async (email, subject, template, data) => {
+const sendEmail = async (email, subject, template) => {
     // Implementation for sending email
     const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
