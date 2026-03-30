@@ -20,7 +20,7 @@ const activationAccountService = async (activationToken, activationCode) => {
         }
 
         // Mark the user's email as verified in the database
-        const exitUser = await userRepository.findByEmail(decoded.email);
+        const exitUser = await userRepository.findByEmail(decoded.user.email);
         if (!exitUser) {
             throw new Error("User not found");
         }

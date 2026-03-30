@@ -25,9 +25,9 @@ class AuthService {
             // http://localhost:4001/api/v1/activation/activate?activationToken=token&activationCode=123456
             const activationLink = `${baseUrl}/api/v1/activation/activate?activationToken=${token}&activationCode=${activationCode}`;
 
-            const data = { user: { name: `${user.firstName} ${user.lastName} ` }, acivationCode: activationCode, activationLink };
+            const emailData = { user: { name: `${user.firstName} ${user.lastName} ` }, activationCode, activationLink };
 
-            const html = await ejs.renderFile(path.join(__dirname, "../mails/activation-mail.ejs"), data);
+            const html = await ejs.renderFile(path.join(__dirname, "../mails/activation-mail.ejs"), emailData);
 
             await sendMail(user.email, "Account Activation", html);
 
