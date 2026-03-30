@@ -33,7 +33,12 @@ class AuthService {
 
             return { user, token };
         } catch (error) {
-            throw error
+            if (error.code === 11000) {
+                const field = Object.keys(error.keyValue)[0];
+                throw new Error(`Duplicate value for ${field}: ${error.keyValue[field]}`);
+            }
+            throw error;
+
         }
     }
     async login(data) {
